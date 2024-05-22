@@ -1,25 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
 
-function App() {
+const letterList = "ABCDEFGHIJKLMNOPQRST";
+const App = () => {
+  const [outputString, setOutputString] = useState("");
+
+  const handleClick = (letter) => {
+    let newString = outputString + letter;
+
+    // Replace consecutive letters with underscores
+    newString = newString.replace(/([A-Z])\1{2,}/g, (match) =>
+      "_".repeat(match.length)
+    );
+
+    setOutputString(newString);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="grid">
+        {letterList.split("").map((item, index) => (
+          <div key={index} className="tile" onClick={() => handleClick(item)}>
+            {item}
+          </div>
+        ))}
+      </div>
+      <div className="outputString">
+        {outputString === "" ? <p>No Letter Typed</p> : <p>{outputString}</p>}
+      </div>
     </div>
   );
-}
+};
 
 export default App;
